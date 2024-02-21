@@ -1,0 +1,5193 @@
+openapi: "3.0.0"
+info:
+  version: 1.2.32
+  title: "Open Banking Insights"
+  description: "This specification covers the APIs for the Equifax Open Banking Insights\
+    \ Product. "
+  contact:
+    name: "API Support Team"
+    email: "Hello@equifax.com"
+security:
+  - bearerAuth: []
+servers:
+- url: "https://api.sandbox.equifax.co.uk/open-banking-insights/v1"
+tags:
+- name: "CONSUMER"
+  description: "These APIs are available to clients that register for the consumer\
+    \ product."
+- name: "COMMERCIAL"
+  description: "These APIs are available to clients that register for the commercial\
+    \ product."
+- name: "GENERAL"
+  description: "These APIs are available to clients that register for either the consumer\
+    \ or the commercial product."
+- name: "ENRICH"
+  description: "Enrich APIs allow transactional data to be submitted, analysed and\
+    \ categorised. <br/>The richly categorised data is then available via the other\
+    \ APIs for inclusion into customer decisioning."
+- name: "PDF Generation"
+  description: "These APIs can be used to obtain open banking transaction data and\
+    \ Insights in a PDF format.<br/>The PDF can be downloaded via the URL returned\
+    \ from the API call."
+paths:
+  /commercial/businessHealthCharacteristics:
+    get:
+      tags:
+      - "COMMERCIAL"
+      operationId: "Business Health Characteristics Data"
+      description: "Equifax Business Health Characteristics uses current account transaction\
+        \ data to offer you a more complete picture of a company's financial health,\
+        \ helping you make more accurate lending decisions. Because it uses transaction\
+        \ data, it doesn’t rely on your business customers having a history of credit,\
+        \ in order to determine their ability to pay back a loan, invoice finance\
+        \ or asset finance agreement.<p>This means that you can more accurately assess\
+        \ the creditworthiness and affordability of UK businesses who are applying\
+        \ to the CBILS scheme with characteristics that show turnover and payments\
+        \ such as Tax and Salary. Characteristics are available over 1,3,6, 12 and\
+        \ 24 months and cover pre-COVID (pre March 1 2020), post-COVID (post March\
+        \ 1 2020) and rolling periods (crossing the ‘COVID’ date) in addition to chars\
+        \ that cover loans and other borrowing taken during the COVID period.</p>"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonths1361224Param"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/BhcScorecardApiResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/financialHealthIndex:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Financial Health Index (V1)"
+      description: "Financial Health Index is a single metric that summarises a customer’\
+        s financial health based on current account transaction data. It uses open\
+        \ banking technology to analyse a customer’s current account data in real\
+        \ time and identify their likelihood of making credit repayments. The Index\
+        \ (values 1- 9) ranks an individual's creditworthiness based on behaviours\
+        \ and insights found in account information. Proven to be highly predictive\
+        \ of credit risk, the FHI can be used in combination with traditional credit\
+        \ scoring approaches to improve the assessment of creditworthiness by incorporating\
+        \ insights from account information (income, salary, rental payments, council\
+        \ tax payments, account surplus, etc.) for a more holistic risk assessment.\
+        \ Transparent and explainable, alongside the FHI are supplied 26 credit risk\
+        \ indicators that help explain why the individual has been assigned the index\
+        \ value. Financial Health Index (V1) is based on amount of account information\
+        \ requested, e.g. 3, 6 and 12 months of data."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonths3612Param"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/FhiApiResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/financialHealthIndex/months:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Financial Health Index (V2)"
+      description: "Financial Health Index V2 is an improved version of the Financial\
+        \ Health Index V1 where all data can be returned in the output, e.g. 3, 6\
+        \ and 12 months of data."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonth3612Param"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/FhiMonthResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/automatedIncomeVerification:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Automated Income Verification (V1)"
+      description: "<p>Automated Income Verification enables real-time, digital income\
+        \ verification from personal current account transaction data made available\
+        \ from Open Banking APIs.</p> <p>The solution provides a ranking (A to F)\
+        \ of the amount of evidence there is to support a customer declared income.\
+        \ It also breaks down income into individual components such as salary, benefits\
+        \ and pension for more granular insight and more accurate verification. It\
+        \ can be used by any organisation, provided the customer gives their consent\
+        \ and banks digitally.</p>"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonths3612Param"
+      - $ref: "#/components/parameters/GrossAnnualSalaryParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/AivScorecardApiResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/automatedIncomeVerification/months:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Automated Income Verification (V2)"
+      description: "Automated Income Verification V2 is an improved version of the Automated\
+        \  Income Verification V1 where all data can be returned in the output, e.g. 3, 6\
+        \ and 12 months of data."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonth3612Param"
+      - $ref: "#/components/parameters/GrossAnnualSalaryParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/AivMonthResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/createTempToken:
+    post:
+      tags:
+      - "GENERAL"
+      operationId: "Create Temporary Token"
+      description: "One temporary CustomerId is created per customer and can be shared with various lenders, after 24 hours this token will expire."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/LenderName"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerIdResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/allData:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "All Data"
+      description: "This is the new version of the All Data endpoint. This APIs returns\
+        \ all categorised data and events from all accounts held against a customer\
+        \ record in a single call."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DataResponseAllDataOverview"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/consentsStatuses:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Consents Statuses"
+      description: "Returns the consents statuses for each account the customer has\
+        \ shared with the client. Includes whether the customer has claimed, revoked\
+        \ or reauthorised a given consent, and the period that the existing consent\
+        \ is valid for."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/ConsentsStatuses"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/bankAccountVerificationDetails:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Bank Account Verification Details"
+      description: "Bank Account Verify API enables an organisation to perform an\
+        \ anti-impersonation check and help verify the consumer’s identity through\
+        \ Open Banking APIs. The solution combines bank authentication through Open\
+        \ Banking with credit information held by Equifax to help, digitally and in\
+        \ real-time, confirm the identity of the individual and help reduce attempted\
+        \ fraud.</br>Our verification process reconciles the customer's bank account\
+        \ number and sort code against their address details and also provides details\
+        \ as to the age of the account."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/BankAccountVerificationResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/incomeVerification:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Customer Income Verification"
+      description: "Customer Income Verification is a simple API service which allows\
+        \ clients to verify a customers’ salary and employment status in real-time\
+        \ using Open Banking data. It can be accessed with a simple API integration\
+        \ that can add immediate operational improvements to your business and remove\
+        \ the need for any phone calls to be made to employers to check employment\
+        \ status. The clients can stop asking customers to send you payslips or bank\
+        \ statements and get the information you need accurately and efficiently in\
+        \ real-time."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerIncomeVerificationRevisedResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customerAccounts:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Accounts"
+      description: "This API returns all top level bank account information from all\
+        \ current and savings accounts held against a customer record without pulling\
+        \ transaction data."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerAccountsResponseV1_5"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/customerCalculations:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Customer Calculations"
+      description: "The Customer Calculations API provides a view of a customer's\
+        \ income, expenditure and disposable income position, based on either default\
+        \ affordability weightings or client specified weightings which can be set\
+        \ in the client dashboard."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DiResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/tenantVerification:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Tenant Verification"
+      description: "TenantConnect API solution helps remove the need for manual checks\
+        \ of payslips and bank statements. It provides our clients with income verification\
+        \ as well as identified rent and mortgage payments that are being made by\
+        \ the customer.<p>TenantConnect has been designed for business that want to:</p>\
+        \ <ul>\n  <li>See if rent or mortgage payments have been made for the last\
+        \ 12 months.</li>\n  <li>Check if these payments have been made on time and\
+        \ are not in arrears.</li>\n  <li>See the frequency of rent/mortgage transactions.</li>\n\
+        \  <li>Check that a customer is employed.</li>\n  <li>Verify how much a customer\
+        \ earns.</li>\n  <li>See how frequently the customer is paid.</li>\n  <li>Confirm\
+        \ if the customer is receiving benefits or not.</li>\n  <li>View the customers\
+        \ next pay date.</li>\n</ul>"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerIncomeTenantVerificationResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/standardFinancialStatement:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Standard Financial Statement"
+      description: "Standard Financial Statement (SFS) API is designed to retrieve\
+        \ a person's income and outgoings, along with any debts they owe in a industry\
+        \ approved SFS format. The SFS is an initiative designed to bring consistency\
+        \ to the way in which customer finances are assessed and is mainly used by\
+        \ debt advice providers and other relevant organisations.<br/>It provides\
+        \ a single format for financial statements, allowing the debt advice sector\
+        \ and creditors to work together to achieve the right outcomes for people\
+        \ struggling with their finances.<br/>This API is a mapping of our core categorisation\
+        \ and allows the client to directly ingest data in the SFS format."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/StandardFinancialStatementResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/incomeEstimation:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Income Estimation"
+      description: "Income estimation API provides up-to-date point estimates of the\
+        \ income of a customer based on their personal current account information."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonths3612Param"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/IncomeEstimationResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/customerExpenditure:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Customer Expenditure"
+      description: "Expenditure APIs provides characteristics and summaries of a customer’\
+        s expenditures, including non-discretionary, discretionary and living expenses,\
+        \ based off personal current account information obtained from Open Banking\
+        \ APIs."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonths3612Param"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerExpenditureResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/transactionVulnerability:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Transaction Vulnerability"
+      description: "The Transaction Vulnerability APIs uses our Open Banking capabilities to look at a customer’\
+        s expenditures and assess if they are potentially in a vulnerable financial position,\
+        \ based off personal current account information obtained from Open Banking\
+        \ APIs."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/NumberOfMonths3612Param"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TransactionVulnerabilityResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/collections:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Collections"
+      description: "This API  is desgined to be used in the Collections journey. Can\
+        \ be used to ask the customer additonal details or questions about their personal\
+        \ circumstances  and about their Income and Expenditure."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CollectionsResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/account/bankAccountVerificationDetails:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Customer Account Bank Account Verification Details"
+      description: "Bank Account Verify API enables anti-impersonation checks for\
+        \ a given account, combining bank authentication through Open Banking with\
+        \ credit information held by Equifax to help reduce fraud. The AccountId can\
+        \ be retrieved either from the AllData endpoint or CustomerAccounts endpoint."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParamMandatory"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/BankAccountVerificationResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/account/customerCalculations:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Customer Calculations(Account Level)"
+      description: "The Customer Calculations API provides a account level view of\
+        \ a customer's income, expenditure and disposable income position, based on\
+        \ either default affordability weightings or client specified weightings which\
+        \ can be set in the client dashboard.The  AccountId can be retrieved either\
+        \ from the AllData endpoint or CustomerAccounts endpoint."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParamMandatory"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DiResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/customerState:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Customer State"
+      description: "The Customer State API provides a state value against customer Id"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerStateResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/getCustomer:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Get Customer"
+      description: "The Get Customer API provides all account details based on a specific Customer Id"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/getCustomerFinancialServices:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Get Customer Financial Services"
+      description: "The Customer Financial Services API provides a consolidated summary of each financial service availed by the customer. This API only deals with transactions that have been categorised under financial services."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DataResponseCategorySummaryOverview"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/getCustomerBalances:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Get Customer Balances"
+      description: "The Customer Balances API provides the monthly or daily available customer balance during the consent period."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/AggregatedResponseBalancesOverview"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/getEnhancedCustomerEventsv1_1:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Get Enhanced Customer Events V1.1"
+      description: "The Enhanced Customer Events V1.1 API provides a monthly events history for a specific customer."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/AggregatedResponseEnhancedEventOverview"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /consumer/reverseLookup:
+    post:
+      tags:
+      - "CONSUMER"
+      operationId: "Apply+"
+      description: "<p>The Apply+ API will enable the clients to obtain the Name, Address \
+        \ and DOB of their customers which can be used to pre-populate the application forms \
+        \ (typically Originations form). This  API can be used by the clients  who can provide us \
+        \ with their customer's account number and sort code or  can be integrated with the \
+        \ client's own open banking journey. \
+
+        \ </br></br>By using the Apply+ API the client will supply the sort code and account \
+        \ number for a UK bank account without any accompanying identifying data. The data will \
+        \ then be used to match with Equifax ‘s bureau data.  Once the correct account has been \
+        \ located the account holder details such as Full name, Address and Date of Birth will be \
+        \ extracted and returned through the API</p>"
+      parameters:
+       - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/ReverseLookupResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ReverseLookupErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReverseLookupRequest"
+        required: true
+  /consumer/OBID:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Enhanced Customer OBID"
+      description: "<p>Enhanced OBID builds on the existing data fields available within open banking. Open Banking captures the customers full legal name and returns these values to clients at an account level, allowing them to check that the bank has the same account holder registered that the applicant is applying with. </br>Returns data on a customer level</p>"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/EnhancedOBIDResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+  /consumer/account/OBID:
+    get:
+      tags:
+      - "CONSUMER"
+      operationId: "Enhanced Customer Account OBID"
+      description: "<p>Enhanced OBID builds on the existing data fields available within open banking. Open Banking captures the customers full legal name and returns these values to clients at an account level, allowing them to check that the bank has the same account holder registered that the applicant is applying with. </br>Returns data on a customer account level</p>"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParamMandatory"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/EnhancedOBIDResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+  /commercial/companyBusinessInsightsData:
+    get:
+      tags:
+      - "COMMERCIAL"
+      operationId: "Company Business Insights Data"
+      description: "The company business insights data api provides all data related to company profile"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/EquifaxBusinessInsightsResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /commercial/yearlyForecast:
+    get:
+      tags:
+      - "COMMERCIAL"
+      operationId: "Yearly Forecast"
+      description: "Forecast API is designed primarily for SME evaluation provides\
+        \ yearly, quarterly and monthly views. It looks at the historic actual data\
+        \ and enables a lender to pre-populate future data on a linear scale, using\
+        \ historic averages, replicating the historic data or inputting data manually\
+        \ as appropriate."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/YearlyForecastResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /commercial/intelligence/transactions:
+    get:
+      tags:
+      - "COMMERCIAL"
+      operationId: "Intelligence Transactions"
+      description: "This API returns the output in a P & L type format instead of\
+        \ our standard categories. The outputs are based on the set on categorised\
+        \ transactions mapped to commercial intelligence layer."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartDate.dayParam"
+      - $ref: "#/components/parameters/StartDate.monthParam"
+      - $ref: "#/components/parameters/StartDate.yearParam"
+      - $ref: "#/components/parameters/EndDate.dayParam"
+      - $ref: "#/components/parameters/EndDate.monthParam"
+      - $ref: "#/components/parameters/EndDate.yearParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CommercialIntelligenceTransactionsResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/lookup/availableBanks:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Available Banks Lookup"
+      description: "This API lists all the banks that will be shown to the customer\
+        \ during the consents.online journey"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/AvailableBanksLookupResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/lookup/customerId:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Id"
+      description: "The Customer Lookup API can be used to get Customer Identifiers\
+        \ from data about the requested customer. This is required to perform pulls\
+        \ of individual customer data."
+      parameters:
+      - name: "externalReference"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
+          pattern: "^[A-Z0-9a-z]{4}[A-Z0-9a-z\\- ]{0,32}$"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerIdResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/lookup/sortCode:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Sort Code Lookup"
+      description: "The sort code lookup endpoint allow you to pass a sort code to\
+        \ us and to retrieve the name and the search string required in a form for\
+        \ pre-selecting a users bank. This can help to streamline the user's journey."
+      parameters:
+      - name: "sortCode"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
+          pattern: "^[0-9]{6}$"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/SortCodeLookupResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customerProgress:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Progress"
+      description: "The Customer Progress API endpoint can be used to track the status\
+        \ of a customer through the application process. <p><b>Signup States</b></p>\
+        \ 2:  Selected Bank <br/>3:  Entered Bank Details <br/>12:  Consents Shown\
+        \ <br/>13:  Consents Submitted <br/>15:  Consents Declined <br/>62:  Consents\
+        \ Registered <br/>67:  Open Banking Cancelled <br/>100:  Completed <br/>101:\
+        \  Completed: Additional account <br/>102:  Completed: No transactions <p><b>Bank\
+        \ Error States</b></p> 50:  Invalid Details <br/>51:  User Action Required\
+        \ <br/>59:  Account Locked <p><b>Stopped States</b></p> 52:  System Error\
+        \ <br/>53:  Bank Unresponsive <br/>54:  Agent Error <br/>55:  MFA Error <p><b>Bank\
+        \ Signup States</b></p> 99:  MFA Needs Completing <br/>53:  Bank Unresponsive\
+        \ <br/>54:  Agent Error <br/>55:  MFA Error <p><b>Valid Details States</b></p>\
+        \ 56:  Valid Details <br/>57:  Details Received <br/>58:  Currently Refreshing"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerProgressResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customerProgressCompleteHistory:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Progress Complete History"
+      description: "The Customer Progress Complete History API endpoint can be used\
+        \ to provide an audit trail of all customer statuses through their journey."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CompleteCustomerProgressHistoryResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/disableRefresh:
+    post:
+      tags:
+      - "GENERAL"
+      operationId: "Disable Refresh"
+      description: "The Disable Refresh API can be used to disable or terminate  the\
+        \ daily refresh request of  obtaining the transaction data from the Open Banking\
+        \ APIs for a customer. This API  is typically used by the clients when the\
+        \ customer has specifically requested to stop the daily refresh of their data\
+        \ (revoke their consent) or the customer is no longer with the client."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DisableRefresh"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/refresh:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Refresh"
+      description: "The Refresh can be used by the clients to request consents.online\
+        \ to pull the latest data of a customer from the Open Banking APIs and then\
+        \ recategorise the customers data. <p>The Refresh API can only be used when\
+        \ the customer during the open banking journey has  provided \"Recurring consent\"\
+        \ permission and valid consents token is available for the customer.</p>"
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/Refresh"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customer/account/allData:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Account All Data"
+      description: "This is the new version of the All Data endpoint. For a given\
+        \ account the customer has shared through the open banking journey, this API\
+        \ returns the categorised transactions, events, balances and category breakdown.\
+        \ The  AccountId can be retrieved either from the AllData endpoint or CustomerAccounts\
+        \ endpoint."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParamMandatory"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DataResponseAllDataOverview"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/policyRules:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Policy Rules"
+      description: "This API returns the output and the data based on the specific\
+        \ policy rule provided by the client.The Policy rule is hosted at Equifax."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/PolicyRulesResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customer/transactions/breakdown:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Transactions Breakdown"
+      description: "This API returns a breakdown of the sum of transactions in each\
+        \ primary category, split by credit / debit, per month."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CategoryBreakdownResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customer/transactions/breakdown/category/direction:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Category Breakdown with Direction and Category"
+      description: "This API returns a breakdown of the sum of transactions in a specified\
+        \ primary category and direction (credit or debit), per month."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/DirectionParam"
+      - $ref: "#/components/parameters/CategoryParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CategoryBreakdownDirectionCategoryResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customer/transactions/categorised:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Categorised Transactions"
+      description: "This API returns a full list of categorised transactions for a\
+        \ given account shared through open banking."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CategorisedTransactionsResponseV1_5"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customer/account/transactions/categorised:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Customer Account Categorised Transactions"
+      description: "This API returns a full list of categorised transactions for a\
+        \ given account shared through open banking - at account level. The  AccountId\
+        \ can be retrieved either from the AllData endpoint or CustomerAccounts endpoint."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParamMandatory"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CategorisedTransactionsResponseV1_5"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customer/transactions/breakdown/subCategoryL30L90:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Sub Category Breakdown L30L90"
+      description: "For each category --> subcategory combination seen in the account\
+        \ (split by credit / debit), this API returns the count of transactions and\
+        \ sum of transactions in both the last 30 and last 90 day periods of an account."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/SubCategoryBreakdownL30L90Response"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/creditCards/accounts:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Credit Card (customer accounts)"
+      description: "This API  returns all top level bank account information from\
+        \ all credit card accounts held against a customer record without pulling\
+        \ transaction data."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerAccountsResponseV1_5"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/creditCards/allData:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Credit Card (All data)"
+      description: "For any credit cards a customer has shared through the open banking\
+        \ journey, this API  returns the categorised transactions, events, balances,\
+        \ category breakdown and list of accounts."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DataResponseAllDataOverview"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/creditCards/account/allData:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Credit Card (All data - Account level)"
+      description: "For a given credit card account the customer has shared through\
+        \ the open banking journey, this API returns the categorised transactions,\
+        \ events, balances and category breakdown based on the account selected. The\
+        \  AccountId can be retrieved either from the AllData endpoint or CustomerAccounts\
+        \ endpoint."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParamMandatory"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/DataResponseAllDataOverview"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/healthCheck:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Health Check"
+      description: "This API makes a generic call to a static demo customer and returns\
+        \ whether the AS system successfully returned data in an easy to use status.\
+        \ I.e. 'Healthy'."
+      responses:
+        "200":
+          $ref: "#/components/responses/HealthCheckResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/healthCheck/webhook:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Webhook"
+      description: "This API offers the ability to make server side external calls\
+        \ back to your system when significant events occur. Once you provide us with\
+        \ a webhook URL via onboarding, we will be able to invoke this via GET when\
+        \ key events occur and also pass some optional parameters with it. This allows\
+        \ you to test that the webhook mechanism is working successfully."
+      parameters:
+      - $ref: "#/components/parameters/ReferenceParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/WebhookResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /general/customer/account/transactions/breakdown/category/direction:
+    get:
+      tags:
+      - "GENERAL"
+      operationId: "Category Breakdown (Category - Account Level)"
+      description: "This API returns a breakdown of the sum of transactions in a specified\
+        \ primary category and direction (credit or debit), per month - at an account\
+        \ level. The  AccountId can be retrieved either from the AllData endpoint\
+        \ or CustomerAccounts endpoint."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountIdParamMandatory"
+      - $ref: "#/components/parameters/DirectionParam"
+      - $ref: "#/components/parameters/CategoryParam"
+      - $ref: "#/components/parameters/StartYearParam"
+      - $ref: "#/components/parameters/StartMonthParam"
+      - $ref: "#/components/parameters/EndYearParam"
+      - $ref: "#/components/parameters/EndMonthParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CategoryBreakdownDirectionCategoryResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /enrich/createCustomer:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Create Customer (Consumer Only)"
+      description: "This is one of several API's belonging to the Enrich set; API's\
+        \ in this group allows detailed transaction information to be entered for\
+        \ subsequent analysis and classification. <p>Creates a new customer. The API\
+        \ will then return the customerRef for the customer, as given by you. This\
+        \ is a Consumer only API endpoint.</p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerReferenceResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCustomerRequest"
+        required: true
+  /enrich/createCompany:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Create Company (Commercial Only)"
+      description: "Creates a new company. The API will then return the customerRef\
+        \ for the customer, as given by you. This is a Commercial only API endpoint."
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/CustomerReferenceResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCompanyRequest"
+        required: true
+  /enrich/addBank:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Add Bank"
+      description: "This is one of several API's belonging to the Enrich set; API's\
+        \ in this group allows detailed transaction information to be entered for\
+        \ subsequent analysis and classification. <p>Adds a bank for the customer.\
+        \ A customer can have multiple banks. The API will then return the bankId\
+        \ for the customer.</p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/BankIdResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSiteRequest"
+        required: true
+  /enrich/addAccount:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Add Account"
+      description: "This is one of several API's belonging to the Enrich set; API's\
+        \ in this group allows detailed transaction information to be entered for\
+        \ subsequent analysis and classification. <p>Adds an account for the customer.\
+        \ A customer can have multiple accounts added under a bank. The API will then\
+        \ return an accountReference for the account.</p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/AccountReferenceResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateItemAccountRequest"
+        required: true
+  /enrich/addTransactions:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Add Transactions"
+      description: "This is one of several API's belonging to the Enrich set; API's\
+        \ in this group allows detailed transaction information to be entered for\
+        \ subsequent analysis and classification. <p>Adds transactions for a customer.\
+        \ The API will then return a string confirmation \"Transactions added\" or\
+        \ \"Failed to add transactions\"</p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/MessageResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddTransactionsRequest"
+        required: true
+  /enrich/updateAccountBalance:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Update Account Balance"
+      description: "This is one of several API's belonging to the Enrich set; API's\
+        \ in this group allows detailed transaction information to be entered for\
+        \ subsequent analysis and classification. <p>Updates available and current balance for a customer account reference under a bank.\
+        \ The API will then return a string confirmation \"BalanceAmount Updated\"\
+        \ This API allows the option to correct the balance amount.</p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/MessageResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAccountBalanceRequest"
+        required: true
+  /enrich/completeImport:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Complete Import"
+      description: "This is one of several API's belonging to the Enrich set; API's\
+        \ in this group allows detailed transaction information to be entered for\
+        \ subsequent analysis and classification. <p>Completes the import by analysing\
+        \ all the transactions. The API will then return an import reference which\
+        \ can be used to track the process of the import.</p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/MessageResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompleteImportRequest"
+        required: true
+  /enrich/trackProgress:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Track Progress"
+      description: "This is one of several API's belonging to the Enrich set; API's\
+        \ in this group allows detailed transaction information to be entered for\
+        \ subsequent analysis and classification. <p>Tracks the progress of the import.\
+        \ completeImportReference is the reference returned by the completeImport\
+        \ request. The API will then return true or false depending on whether the\
+        \ import has completed.</p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/ImportCompletedResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrackProgressRequest"
+        required: true
+  /enrich/createAndEnrich:
+    post:
+      tags:
+      - "ENRICH"
+      operationId: "Enrich V2"
+      description: "Enrich V2 API is an improved version of the Enrich V1 APIs which\
+        \ allows transactional data to be submitted, analysed and categorised easily\
+        \ and quickly.<p>It allows the clients to share the transactional data with\
+        \ Equifax , via the new API, which Equifax will then analyse, categorise and\
+        \ return the enriched data via API.  </p>"
+      parameters:
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/MessageResponse"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAndEnrichRequest"
+        required: true
+  /pdf/standardSignup/getPDFURL:
+    get:
+      tags:
+      - "PDF Generation"
+      operationId: "Standard Signup PDF URL"
+      description: "Once a customer has completed their signup journey, we can make\
+        \ the data available to you via PDF download. This API will return a download\
+        \ link for the PDF. This link will only be valid for 5 minutes after which\
+        \ the link will be deactivated and another call will need to be made to regenerate\
+        \ the link."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/URLResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /pdf/standardFinancialStatement/getPDFURL:
+    get:
+      tags:
+      - "PDF Generation"
+      operationId: "Standard Financial Statement PDF URL (Consumer Only)"
+      description: "Once a customer has completed their signup journey, we can make\
+        \ the data in Standard financial statement (SFS) format available to you via\
+        \ PDF. This API will return a download link for the PDF. This link will only\
+        \ be valid for 5 minutes after which the link will be deactivated and another\
+        \ call will need to be made to regenerate the link."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/URLResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+  /pdf/refreshedData/getPDFURL:
+    get:
+      tags:
+      - "PDF Generation"
+      operationId: "Refreshed Data PDF URL"
+      description: "Once a customer has completed their signup journey, we can make\
+        \ the Refresh data available to you via PDF download. This API will return\
+        \ a download link for the PDF. This link will only be valid for 5 minutes\
+        \ after which the link will be deactivated and another call will need to be\
+        \ made to regenerate the link."
+      parameters:
+      - $ref: "#/components/parameters/CustomerIdParam"
+      - $ref: "#/components/parameters/AccountReferenceParam"
+      - $ref: "#/components/parameters/EfxClientCorrelationIdParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/URLResponse"
+        "204":
+          $ref: "#/components/responses/204NoDataFound"
+        "400":
+          $ref: "#/components/responses/400ErrorResponse"
+        "401":
+          $ref: "#/components/responses/401ErrorResponse"
+        "404":
+          $ref: "#/components/responses/404ErrorResponse"
+        "429":
+          $ref: "#/components/responses/429ErrorResponse"
+        "500":
+          $ref: "#/components/responses/500ErrorResponse"
+components:
+  parameters:
+    AccountReferenceParam:
+      in: "query"
+      name: "accountReference"
+      description: "Customer account reference"
+      required: false
+      schema:
+        format: "uuid"
+        type: "string"
+        example: "00000000-0000-0000-0000-000000000000"
+    CustomerIdParam:
+      in: "query"
+      name: "customerId"
+      description: "Internal Id of the customer. This can be retrieved from the /general/lookup/customerId\
+        \ endpoint when providing an external client reference."
+      required: true
+      schema:
+        type: "string"
+        pattern: "^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$"
+    EfxClientCorrelationIdParam:
+      in: "header"
+      name: "efx-client-correlation-id"
+      description: "This is a client reference ID, which is returned in the response.\
+        \ This can be used by clients for their own reference and logging purposes."
+      schema:
+        type: "string"
+    GrossAnnualSalaryParam:
+      in: "query"
+      name: "grossAnnualSalary"
+      description: "The value provided in this parameter will be used to override\
+        \ the value provided during the customer application process."
+      required: false
+      schema:
+        type: "integer"
+    NumberOfMonths3612Param:
+      in: "query"
+      name: "numberOfMonths"
+      description: "3, 6 or 12 months for transaction data to be provided in the response."
+      required: true
+      schema:
+        type: "integer"
+        pattern: "3|6|12"
+    NumberOfMonths1361224Param:
+      in: "query"
+      name: "numberOfMonths"
+      description: "1, 3, 6, 12 or 24 months of transaction data to be utilised in\
+        \ the response calculation."
+      required: true
+      schema:
+        type: "integer"
+        pattern: "1|3|6|12|24"
+    NumberOfMonth3612Param:
+      in: "query"
+      name: "numberOfMonth"
+      description: "An array of integers, containing either 3, 6 or 12 months for\
+        \ transaction data to be provided in the response."
+      schema:
+        type: "integer"
+        pattern: "3|6|12"
+    AccountIdParam:
+      in: "query"
+      name: "accountId"
+      description: "The accountId provided must be a valid GUID type."
+      schema:
+        type: "string"
+        pattern: "^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$"
+    AccountIdParamMandatory:
+      in: "query"
+      name: "accountId"
+      description: "The accountId provided must be a valid GUID type."
+      required: true
+      schema:
+        type: "string"
+        pattern: "^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$"
+    DirectionParam:
+      in: "query"
+      name: "direction"
+      description: "The direction provided must be an integer. 0 for Credits and 1\
+        \ for Debits."
+      required: true
+      schema:
+        type: "integer"
+        default: "0"
+        pattern: "^[0-1]{1}$"
+    CategoryParam:
+      in: "query"
+      name: "category"
+      description: "The category provided must be of string type."
+      required: true
+      schema:
+        type: "string"
+    LenderName:
+      in: "query"
+      name: "lenderName"
+      description: "The lender Name provided must be of string type."
+      required: false
+      schema:
+        type: "string"
+    StartYearParam:
+      in: "query"
+      name: "startYear"
+      description: "The year provided must be between 1900 and 3000."
+      schema:
+        type: "integer"
+        default: 1900
+        pattern: "^(19\\d{2}|2\\d{3}|3000)$"
+    EndYearParam:
+      in: "query"
+      name: "endYear"
+      description: "The year provided must be between 1900 and 3000. End year must\
+        \ not be less than startYear."
+      schema:
+        type: "integer"
+        default: 3000
+        pattern: "^(19\\d{2}|2\\d{3}|3000)$"
+    StartDate.dayParam:
+      in: "query"
+      name: "startDate.day"
+      description: "The day provided must be between 1 and 31."
+      schema:
+        type: "integer"
+        pattern: "^(0?[1-9]|[12][0-9]|3[01])$"
+    StartDate.monthParam:
+      in: "query"
+      name: "startDate.month"
+      description: "The month provided must be between 1 and 12."
+      schema:
+        type: "integer"
+        pattern: "^(0?[1-9]|1[012])$"
+    StartDate.yearParam:
+      in: "query"
+      name: "startDate.year"
+      description: "The year provided must be between 1900 and 3000."
+      schema:
+        type: "integer"
+        pattern: "^(19\\d{2}|2\\d{3}|3000)$"
+    EndDate.dayParam:
+      in: "query"
+      name: "endDate.day"
+      description: "The day provided must be between 1 and 31. If startDate.year and\
+        \ endDate.year are the same and startDate.month and endDate.month are the\
+        \ same, then endDate.day should not be less than startDate.day"
+      schema:
+        type: "integer"
+        pattern: "^(0?[1-9]|[12][0-9]|3[01])$"
+    EndDate.monthParam:
+      in: "query"
+      name: "endDate.month"
+      description: "The month provided must be between 1 and 12. If startDate.year\
+        \ and endDate.year are the same then endDate.month must not be less than startDate.month."
+      schema:
+        type: "integer"
+        pattern: "^(0?[1-9]|1[012])$"
+    EndDate.yearParam:
+      in: "query"
+      name: "endDate.year"
+      description: "The year provided must be between 1900 and 3000. End year must\
+        \ not be less than startDate.year."
+      schema:
+        type: "integer"
+        pattern: "^(19\\d{2}|2\\d{3}|3000)$"
+    StartMonthParam:
+      in: "query"
+      name: "startMonth"
+      description: "The month provided must be between 1 and 12."
+      schema:
+        type: "integer"
+        default: 1
+        pattern: "^(0?[1-9]|1[012])$"
+    EndMonthParam:
+      in: "query"
+      name: "endMonth"
+      description: "The month provided must be between 1 and 12. If startYear and\
+        \ endYear are the same then endMonth must not be less than startMonth."
+      schema:
+        type: "integer"
+        default: 1
+        pattern: "^(0?[1-9]|1[012])$"
+    ReferenceParam:
+      in: "query"
+      name: "Reference"
+      description: "Must be of type string."
+      schema:
+        type: "string"
+  headers:
+    efx-client-correlation-id:
+      description: "This is a client reference ID, which is returned in the response.\
+        \ This can be used by clients for their own reference and logging purposes."
+      schema:
+        type: "string"
+    efx-transaction-id:
+      description: "A unique reference for the response, used for support queries."
+      schema:
+        type: "string"
+  responses:
+    AccountReferenceResponse:
+      description: "Account Reference Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              accountRef:
+                type: "string"
+    AivScorecardApiResponse:
+      description: "Income Verification Scorecard Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              aivScorecardResponse:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AivScorecardLookupResponse"
+    AivMonthResponse:
+      description: "Income Verification Scorecard Month Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                numberOfMonths:
+                  type: "integer"
+                aivScorecardResponse:
+                  type: "array"
+                  items:
+                   $ref: "#/components/schemas/AivScorecardLookupResponse" 
+    AuthenticateResponse:
+      description: "Authenticate Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              authToken:
+                type: "string"
+    BankAccountVerificationResponse:
+      description: "Bank Account Verification response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/BankAccountVerificationResponse"
+    BankIdResponse:
+      description: "BankId Response - Returns the Id of the Bank added in the request."
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              bankId:
+                type: "string"
+    BhcScorecardApiResponse:
+      description: "Business Scorecard Health Characteristics Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              businessHealthCharacteristicsResponse:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BhcScorecardLookupResponse"
+    CategorisedTransactionsResponseV1_5:
+      description: "Categorised Transactions Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CategorisedTransactionsResponseV1_5"
+    SubCategoryBreakdownL30L90Response:
+      description: "Sub Category Breakdown Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SubCategoryBreakdownL30L90Response"
+    HealthCheckResponse:
+      description: "Health Check Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HealthCheck"
+    CustomerAccountsResponseV1_5:
+      description: "Customer Accounts Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CustomerAccountsV1_5"
+    AvailableBanksLookupResponse:
+      description: "Customer Id Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                displayName:
+                  type: "string"
+                searchTerm:
+                  type: "string"
+    CustomerIdResponse:
+      description: "Customer Id Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              customerId:
+                format: "uuid"
+                type: "string"
+                example: "00000000-0000-0000-0000-000000000000"
+    CustomerIncomeTenantVerificationResponse:
+      description: "Customer Income Tenant Verification Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              totalCredits:
+                format: "double"
+                type: "number"
+              totalDebits:
+                format: "double"
+                type: "number"
+              identifiedSalary:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CustomerIncomeVerificationDto"
+              benefits:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CustomerBenefitVerificationDto"
+              pensionsPayout:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CustomerPensionVerificationDto"
+              rentAndMortgage:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CustomerRentAndMortgageTenantVerificationDto"
+    CustomerIncomeVerificationRevisedResponse:
+      description: "Customer Income Verification Revised Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              totalAmount:
+                format: "double"
+                type: "number"
+              identifiedSalary:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CustomerIncomeVerificationDto"
+              benefits:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CustomerBenefitVerificationDto"
+              pensionsPayout:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CustomerPensionVerificationDto"
+              amberSalary:
+                $ref: "#/components/schemas/CustomerSalaryTrafficLightInfoDto"
+              redSalary:
+                $ref: "#/components/schemas/CustomerSalaryTrafficLightInfoDto"
+    CustomerProgressResponse:
+      description: "Customer Progress Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              progressState:
+                $ref: "#/components/schemas/ProgressState"
+              errorDescription:
+                type: "string"
+              errorCode:
+                format: "int32"
+                type: "integer"
+    CustomerReferenceResponse:
+      description: "Customer Reference Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              customerRef:
+                type: "string"
+    CompleteCustomerProgressHistoryResponse:
+      description: "Complete Customer Progress History Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/CompleteCustomerProgressHistoryResponse"
+    DisableRefresh:
+      description: "Disable Refresh Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DisableRefresh"
+    PolicyRulesResponse:
+      description: "Policy Rules Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PolicyRules"
+    Refresh:
+      description: "Refresh Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Refresh"
+    DataResponseAllDataOverview:
+      description: "Data Response All Data Overview Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AllDataOverviewV1_5"
+    CategoryBreakdownResponse:
+      description: "Category Breakdown Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CategoryBreakdown"
+    CategoryBreakdownDirectionCategoryResponse:
+      description: "Category Breakdown Direction Category Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CategoryBreakdownDirectionCategory"
+    ConsentsStatuses:
+      description: "Consents Statuses Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ConsentsStatuses"
+    CustomerStateResponse:
+      description: "Customer State Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+             state:
+              format: int32
+              type: integer
+    CustomerResponse:
+      description: "Customer Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+           type: object
+           properties:
+            customerId:
+             format: uuid
+             type: string
+             example: 00000000-0000-0000-0000-000000000000
+            accounts:
+             type: array
+             items:
+              "$ref": "#/components/schemas/AccountSummary"
+    DataResponseCategorySummaryOverview:
+      description: "DataResponse Category Summary Overview"
+      headers:
+         efx-client-correlation-id:
+           $ref: "#/components/headers/efx-client-correlation-id"
+         efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+         application/json:
+           schema:
+             type: object
+             properties:
+              data:
+               "$ref": "#/components/schemas/CategorySummaryOverview"
+              calibrationInfo:
+               "$ref": "#/components/schemas/CalibrationInfo"
+    AggregatedResponseBalancesOverview:
+      description: "Aggregated Response Balances Overview"
+      headers:
+         efx-client-correlation-id:
+           $ref: "#/components/headers/efx-client-correlation-id"
+         efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+         application/json:
+           schema:
+             type: object
+             properties:
+               months:
+                 type: array
+                 items:
+                   "$ref": "#/components/schemas/AggregatedByMonthBalancesOverview"
+               calibrationInfo:
+                 "$ref": "#/components/schemas/CalibrationInfo"
+    AggregatedResponseEnhancedEventOverview:
+      description: "Aggregated Response Enhanced Event Overview"
+      headers:
+         efx-client-correlation-id:
+           $ref: "#/components/headers/efx-client-correlation-id"
+         efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+         application/json:
+           schema:
+             type: object
+             properties:
+               months:
+                 type: array
+                 items:
+                   "$ref": "#/components/schemas/AggregatedByMonthEnhancedEventOverview"
+               calibrationInfo:
+                 "$ref": "#/components/schemas/CalibrationInfo"
+    EquifaxBusinessInsightsResponse:
+      description: "Equifax Business Insights Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              mortgages:
+                "$ref": "#/components/schemas/Mortgage"
+              insights:
+                "$ref": "#/components/schemas/Insight"
+              scoreAndLimits:
+                "$ref": "#/components/schemas/ScoreAndLimit"
+              detrimental:
+                "$ref": "#/components/schemas/Detriments"
+              protectCodes:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ProtectCode"
+              antiMoneyLaunderingAlert:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CommercialCharacteristicsResults"
+              antiMoneyLaunderingIdentity:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CommercialCharacteristicsResults"
+              antiMoneyLaunderingExistenceCheck:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CommercialCharacteristicsResults"
+              antiMoneyLaunderingSummaryCount:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CommercialCharacteristicsResults"
+              commercialRiskCharacteristics:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CommercialCharacteristicsResults"
+    DiResponse:
+      description: "Disposable Income Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              average:
+                $ref: "#/components/schemas/DisposableIncome"
+              months:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AggregatedByMonthDisposableIncome"
+              calibrationInfo:
+                $ref: "#/components/schemas/CalibrationInfo"
+    FhiApiResponse:
+      description: "Financial Health Indicator Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              fhiScore:
+                format: "int32"
+                type: "integer"
+              flags:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/FhiLookupResponse"
+    FhiMonthResponse:
+      description: "Financial Health Indicator Month Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                numberOfMonths:
+                  type: "integer"
+                fhiScore:
+                  format: "int32"
+                  type: "integer"
+                flags:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/FhiLookupResponse"
+    ImportCompletedResponse:
+      description: "Import Completed Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              importCompleted:
+                type: "boolean"
+    IncomeEstimationResponse:
+      description: "Income Estimation Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              incomeEstimation:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BhcScorecardLookupResponse"
+              extraIncomeCharacteristics:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BhcScorecardLookupResponse"
+              incomeAlertFlagsCharacteristics:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BhcScorecardLookupResponse"
+    CustomerExpenditureResponse:
+      description: "Customer Expenditure Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              expenditureChars:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BhcScorecardLookupResponse"
+    TransactionVulnerabilityResponse:
+      description: "Transaction Vulnerability Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              vulnerabilityChars:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TransactionVulnerabilityResponse"
+    CollectionsResponse:
+      description: "Collections Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CollectionsResponse"
+    MessageResponse:
+      description: "Message Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+    ResetPasswordResponse:
+      description: "Reset Password Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              password:
+                type: "string"
+    SortCodeLookupResponse:
+      description: "Sort Code Lookup Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              sortCode:
+                type: "string"
+              bankName:
+                type: "string"
+              searchTerm:
+                type: "string"
+    StandardFinancialStatementResponse:
+      description: "Standard Financial Statement Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/StandardFinancialStatementResponse"
+    URLResponse:
+      description: "URL Response"
+      headers:
+        efx-client-correlation-id:
+          description: "This is a client reference ID, which is returned in the response.\
+            \ This can be used by clients for their own reference and logging purposes."
+          schema:
+            type: "string"
+        efx-transaction-id:
+          description: "A unique reference for the response, used for support queries."
+          schema:
+            type: "string"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              Url:
+                type: "string"
+    WebhookResponse:
+      description: "Webhook Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "string"
+            example: "\"Webhook requested\""
+    YearlyForecastResponse:
+      description: "Yearly Forecast Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              creditDebits:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CreditDebit"
+              totals:
+                $ref: "#/components/schemas/ForecastAndActualTotal"
+              ratios:
+                $ref: "#/components/schemas/CreditDebitRatio"
+    CommercialIntelligenceTransactionsResponse:
+      description: "Commercial Intelligence Transactions Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CommercialIntelligenceTransactions"
+    ReverseLookupResponse:
+      description: "Apply+ Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReverseLookup"
+    EnhancedOBIDResponse:
+      description: "Enhanced OBID Response"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EnhancedOBID"
+    "204NoDataFound":
+      description: "No Content (no account found)"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+    "400ErrorResponse":
+      description: "Bad Request"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        '*/*':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/VndError"
+    "400ReverseLookupErrorResponse":
+      description: "Bad Request"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        '*/*':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/ReverseLookupError"
+    "401ErrorResponse":
+      description: "Unauthorized"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        '*/*':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/VndError"
+    "404ErrorResponse":
+      description: "Resource Not Found"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        '*/*':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/VndError"
+    "429ErrorResponse":
+      description: "Too Many Requests"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        '*/*':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/VndError"
+    "500ErrorResponse":
+      description: "Internal Server Error"
+      headers:
+        efx-client-correlation-id:
+          $ref: "#/components/headers/efx-client-correlation-id"
+        efx-transaction-id:
+          $ref: "#/components/headers/efx-transaction-id"
+      content:
+        '*/*':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/VndError"
+    
+  schemas:
+    AccountHoldingResponse:
+      type: "object"
+      properties:
+        identifier:
+          type: "string"
+        value:
+          type: "string"
+        description:
+          type: "string"
+    ActualsShared:
+      type: "object"
+      properties:
+        date:
+          $ref: "#/components/schemas/MonthYearInt"
+        value:
+          format: "double"
+          type: "number"
+    AddTransactionRequest:
+      type: "object"
+      properties:
+        transactionId:
+          type: "integer"
+        amount:
+          type: "number"
+          format: "double"
+          pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}$"
+        description:
+          type: "string"
+        postDate:
+          type: "string"
+          pattern: "^2[0-9]{3}-(1[0-2]|0[1-9])-(0[1-9]|[1,2][0-9]|3[0,1])T([0-1][0-9]|(2[0-3]))(:[0-5][0-9]){0,2}$"
+          example: "2020-03-31T09:37:23"
+      required:
+      - "transactionId"
+      - "amount"
+      - "description"
+      - "postDate"
+    AddTransactionsRequest:
+      allOf:
+      - $ref: "#/components/schemas/CustomerReference"
+      - type: "object"
+        properties:
+          bankId:
+            $ref: "#/components/schemas/BankId"
+          accountRef:
+            type: "string"
+            pattern: "^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$"
+          transactions:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/AddTransactionRequest"
+            minItems: 1
+        required:
+        - "accountRef"
+        - "bankId"
+        - "customerRef"
+        - "transactions"
+    UpdateAccountBalanceRequest:
+      allOf:
+      - $ref: "#/components/schemas/CustomerReference"
+      - type: "object"
+        properties:
+          bankId:
+            $ref: "#/components/schemas/BankId"
+          accountRef:
+            type: "string"
+            pattern: "^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$"
+          currentBalance:
+            type: "number"
+            format: "double"
+            pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}$"
+          availableBalance:
+            type: "number"
+            format: "double"
+            pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}"
+        required:
+        - "bankId"
+        - "accountRef"
+        - "customerRef"
+        - "currentBalance"
+        - "availableBalance"
+    AggregatedByMonthBalancesOverview:
+      type: "object"
+      properties:
+        month:
+          $ref: "#/components/schemas/Month"
+        data:
+          $ref: "#/components/schemas/BalancesOverview"
+    AggregatedByMonthCategoryOverviewCategoryHeader:
+      type: "object"
+      properties:
+        month:
+          $ref: "#/components/schemas/Month"
+        data:
+          $ref: "#/components/schemas/CategoryOverviewCategoryHeader"
+    AggregatedByMonthCategoryBreakdownOverviewCategoryHeader:
+      type: "object"
+      properties:
+        month:
+          $ref: "#/components/schemas/Month"
+        data:
+          $ref: "#/components/schemas/CategoryBreakdownOverviewCategoryHeader"
+    AggregatedByMonthDisposableIncome:
+      type: "object"
+      properties:
+        month:
+          $ref: "#/components/schemas/Month"
+        data:
+          $ref: "#/components/schemas/DisposableIncome"
+    AggregatedByMonthEventOverview:
+      type: "object"
+      properties:
+        month:
+          $ref: "#/components/schemas/Month"
+        data:
+          $ref: "#/components/schemas/EnhancedEventOverview"
+    AggregatedSplitResponseCategoryOverviewCategoryHeader:
+      type: "object"
+      properties:
+        credits:
+          $ref: "#/components/schemas/DirectionCategoryOverviewCategoryHeader"
+        debits:
+          $ref: "#/components/schemas/DirectionCategoryOverviewCategoryHeader"
+    AllDataOverviewV1_5:
+      type: "object"
+      properties:
+        data:
+          $ref: "#/components/schemas/AllDataOverview"
+        calibrationInfo:
+          $ref: "#/components/schemas/CalibrationInfo"
+    AllDataOverview:
+      type: "object"
+      properties:
+        events:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AggregatedByMonthEventOverview"
+        debitCards:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/DebitCard"
+        financialServices:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorySummary"
+        benefits:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorySummary"
+        gambling:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorySummary"
+        regularOutgoings:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorySummary"
+        incomeAnalysis:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorySummary"
+        balances:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AggregatedByMonthBalancesOverview"
+        categoryBreakdown:
+          $ref: "#/components/schemas/AggregatedSplitResponseCategoryOverviewCategoryHeader"
+        customerDetails:
+          $ref: "#/components/schemas/CustomerDetails"
+        categorisedTransactions:
+          $ref: "#/components/schemas/CategorisedTransactionsResponseV1_5"
+        subCategoryBreakdownL30L90:
+          $ref: "#/components/schemas/SubCategoryBreakdownL30L90Response"
+        customerAccounts:
+          $ref: "#/components/schemas/CustomerAccountsV1_5"
+    AivScorecardLookupResponse:
+      type: "object"
+      properties:
+        code:
+          type: "string"
+        label:
+          type: "string"
+        value:
+          type: "string"
+    Balance:
+      type: "object"
+      properties:
+        date:
+          format: "date-time"
+          type: "string"
+        available:
+          format: "double"
+          type: "number"
+    BalancesOverview:
+      type: "object"
+      properties:
+        balances:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Balance"
+        minimum:
+          format: "double"
+          type: "number"
+    BankAccountVerificationResponse:
+      type: "object"
+      properties:
+        accountId:
+          format: "uuid"
+          type: "string"
+          example: "00000000-0000-0000-0000-000000000000"
+        createdDate:
+          format: "date-time"
+          type: "string"
+        accountNumber:
+          type: "string"
+        sortCode:
+          type: "string"
+        dateOfBirth:
+          format: "date-time"
+          type: "string"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        addressLine1:
+          type: "string"
+        addressLine2:
+          type: "string"
+        postTown:
+          type: "string"
+        postCode:
+          type: "string"
+        accountAgeMonths:
+          format: "int32"
+          type: "integer"
+        basicVerification:
+          $ref: "#/components/schemas/EbavResponseWithFlag"
+        suppliedCurrentAddress:
+          $ref: "#/components/schemas/EbavResponse"
+        linkedPreviousAddress:
+          $ref: "#/components/schemas/EbavResponse"
+        accountHoldingChars:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AccountHoldingResponse"
+    BankId:
+      type: "integer"
+      description: "5653: Allied Irish Bank. 5668: B Bank. 5662: Bank of Ireland. 5627: Bank of Scotland (BOS).\
+        \ 5694: Barclaycard. 5626: Barclays. 5698: Capital One. 5701: Cater Allen. 5628: Clydesdale Bank.\
+        \ 5667: Coutts. 5664: Cumberland Building Society. 5643: Default. 5651: Danske Bank. 5630: First Direct.\
+        \ 5652: First Trust Bank. 5631: Halifax Online. 5632: HSBC Bank. 5633: Lloyds. 5654: M&S Bank.\
+        \ 5634: Metro Bank Retail. 5702: Mettle. 5665: Monzo. 5635: Nationwide Building Society.\
+        \ 5636: NatWest Bank (National Westminster Bank). 5663: Revolut. 5637: Royal Bank of Scotland (RBS).\
+        \ 5697: Sainsburys Bank. 5638: Santander. 5703: Starling. 5666: Tesco Bank. 5629: The Co-operative Bank (COOP).\
+        \ 5639: Think Money. 5669: Tide. 5640: TSB. 5641: Ulster Bank. 5700: Vanquis Bank.\
+        \ 5670: Virgin Money. 5720: ANNA. 5721: Counting Up. 5722: Coconut. 5723: Sum Up. 5724: Wise."
+    BhcScorecardLookupResponse:
+      type: "object"
+      properties:
+        charCode:
+          type: "string"
+        label:
+          type: "string"
+        value:
+          type: "string"
+    CalibrationInfo:
+      type: "object"
+      properties:
+        searchGuid:
+          format: "uuid"
+          type: "string"
+          example: "00000000-0000-0000-0000-000000000000"
+        customerId:
+          format: "uuid"
+          type: "string"
+          example: "00000000-0000-0000-0000-000000000000"
+        accountId:
+          format: "uuid"
+          type: "string"
+          example: "00000000-0000-0000-0000-000000000000"
+        startYear:
+          format: "int32"
+          type: "integer"
+        startMonth:
+          format: "int32"
+          type: "integer"
+        endYear:
+          format: "int32"
+          type: "integer"
+        endMonth:
+          format: "int32"
+          type: "integer"
+    CategorySummaryOverview:  
+      type: object
+      properties:
+        summaries:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CategorySummary"
+    AccountSummary:
+      type: object
+      properties:
+        accountId:
+          format: uuid
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+        description:
+          type: string
+        availableBalance:
+          format: double
+          type: number
+        firstSeen:
+          format: date-time
+          type: string
+        accountHolder:
+          type: string
+        accountNumber:
+          type: string
+        sortCode:
+          type: string
+    AggregatedByMonthEnhancedEventOverview:
+      type: object
+      properties:
+        month:
+          "$ref": "#/components/schemas/Month"
+        data:
+          "$ref": "#/components/schemas/EnhancedEventOverview"
+    Mortgage:
+      type: object
+      properties:
+        totalCurrentMortgages:
+          format: int32
+          type: integer
+        latestCurrentMortgageStartDate:
+          format: date-time
+          type: string
+        totalSatisfiedMortgages:
+          format: int32
+          type: integer
+        latestSatisfiedMortgageSatisfiedDate:
+          format: date-time
+          type: string
+    Insight:
+      type: object
+      properties:
+        totalAgreements:
+          format: int32
+          type: integer
+        totalCurrentAgreements:
+          format: int32
+          type: integer
+        totalCurrentOutstandingBalance:
+          format: double
+          type: number
+        totalDefaultAgreements:
+          format: int32
+          type: integer
+        totalDefaultBalance:
+          format: double
+          type: number
+        totalSatisfiedAgreements:
+          format: int32
+          type: integer
+        latestAgreementStartDate:
+          format: date-time
+          type: string
+        latestDefaultDate:
+          format: date-time
+          type: string
+    ScoreAndLimit:
+      type: object
+      properties:
+        equifaxAssignedCreditLimit:
+          format: double
+          type: number
+        scoreNow:
+          format: int32
+          type: integer
+        score3MonthsAgo:
+          format: int32
+          type: integer
+        score6MonthsAgo:
+          format: int32
+          type: integer
+        scoreGradeNow:
+          type: string
+        scoreGrade3MonthsAgo:
+          type: string
+        scoreGrade6MonthsAgo:
+          type: string
+        protectScore:
+          format: int32
+          type: integer
+    Detriments:
+      type: object
+      properties:
+        ccjs:
+          "$ref": "#/components/schemas/Ccj"
+        gazettes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Gazette"
+    ProtectCode:
+      type: object
+      properties:
+        code:
+          type: string
+        alertLabel:
+          type: string
+        description:
+          type: string
+    CommercialCharacteristicsResults:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+        value:
+          type: string
+    Ccj:
+      type: object
+      properties:
+        totalCurrentCcjCount:
+          format: int32
+          type: integer
+        latestCurrentCcjDate:
+          format: date-time
+          type: string
+        totalNumOfSatisfiedCcj:
+          format: int32
+          type: integer
+        latestSatisfiedCcjDate:
+          format: date-time
+          type: string
+        locationCcjCount:
+          format: int32
+          type: integer
+        subjectCcjDetails:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SubjectCcjDetail"
+        locationCcjDetails:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationCcjDetail"
+    Gazette:
+      type: object
+      properties:
+        gazettesPubDoc:
+          type: string
+        gazettesDated:
+          format: date-time
+          type: string
+        gazettesCode:
+          type: string
+        gazettesActionDate:
+          format: date-time
+          type: string
+        gazettesPublished:
+          type: string
+        gazettesDescription:
+          type: string
+    SubjectCcjDetail:
+      type: object
+      properties:
+        court:
+          type: string
+        caseNo:
+          type: string
+        judgementDate:
+          format: date-time
+          type: string
+        satisfactionDate:
+          format: date-time
+          type: string
+        type:
+          type: string
+        amount:
+          format: double
+          type: number
+        matchedStatus:
+          type: string
+    LocationCcjDetail:
+      type: object
+      properties:
+        court:
+          type: string
+        caseNo:
+          type: string
+        judgementDate:
+          format: date-time
+          type: string
+        satisfactionDate:
+          format: date-time
+          type: string
+        type:
+          type: string
+        amount:
+          format: double
+          type: number
+        matchedStatus:
+          type: string
+        locationMatchedCompanyNo:
+          type: string
+        locationMatchedCompanyName:
+          type: string
+        suppliedDefendantCompanyName:
+          type: string
+        suppliedAddress:
+          "$ref": "#/components/schemas/SuppliedAddress"
+    SuppliedAddress:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        addressLine3:
+          type: string
+        addressLine4:
+          type: string
+    CategoryBreakdown:
+      type: "object"
+      properties:
+        credits:
+          $ref: "#/components/schemas/DirectionCategoryOverviewCategoryHeader"
+        debits:
+          $ref: "#/components/schemas/DirectionCategoryOverviewCategoryHeader"
+        calibrationInfo:
+          $ref: "#/components/schemas/CalibrationInfo"
+    CategoryBreakdownDirectionCategory:
+      type: "object"
+      properties:
+        credits:
+          $ref: "#/components/schemas/DirectionCategoryCategoryBreakdownOverviewCategoryHeader"
+        debits:
+          $ref: "#/components/schemas/DirectionCategoryCategoryBreakdownOverviewCategoryHeader"
+        calibrationInfo:
+          $ref: "#/components/schemas/CalibrationInfo"
+    CategoryBreakdownHeader:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        total:
+          format: "double"
+          type: "number"
+    CategoryBreakdownOverviewCategoryHeader:
+      type: "object"
+      properties:
+        categories:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              header:
+                $ref: "#/components/schemas/CategoryBreakdownHeader"
+              transactions:
+                $ref: "#/components/schemas/CategoryBreakdownTransactionsOverview"
+    CategoryBreakdownTransactionsOverview:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          amount:
+            type: "number"
+          description:
+            type: "string"
+          subCategoryDescription:
+            type: "string"
+          vendorDescription:
+            type: "string"
+          postDate:
+            format: "date-time"
+            type: "string"
+    CategorisedTransactions:
+      type: "object"
+      properties:
+        accountId:
+          format: "uuid"
+          type: "string"
+          example: "00000000-0000-0000-0000-000000000000"
+        amount:
+          format: "double"
+          type: "number"
+        bankName:
+          type: "string"
+        description:
+          type: "string"
+        direction:
+          type: "string"
+        hash:
+          type: "string"
+        postDate:
+          format: "date-time"
+          type: "string"
+        primaryCategoryDescription:
+          type: "string"
+        primaryCategoryId:
+          type: "integer"
+        recurrenceEventId:
+          type: "integer"
+        recurrenceType:
+          type: "string"
+        runningBalance:
+          format: "double"
+          type: "number"
+        subCategoryDescription:
+          type: "string"
+        subCategoryId:
+          type: "integer"
+        transactionId:
+          type: "integer"
+        transactionIdx:
+          type: "integer"
+        vendorDescription:
+          type: "string"
+        vendorId:
+          type: "number"
+    CategorisedTransactionsV1_5:
+      type: "object"
+      properties:
+        accountId:
+          format: "uuid"
+          type: "string"
+          example: "00000000-0000-0000-0000-000000000000"
+        primaryCategoryDescription:
+          type: "string"
+        subCategoryDescription:
+          type: "string"
+        vendorDescription:
+          type: "string"
+        description:
+          type: "string"
+        postDate:
+          format: "date-time"
+          type: "string"
+        direction:
+          type: "string"
+        amount:
+          format: "double"
+          type: "number"
+        primaryCategoryId:
+          type: "integer"
+        subCategoryId:
+          type: "integer"
+        transactionId:
+          type: "integer"
+        recurrenceEventId:
+          type: "integer"
+        recurrenceType:
+          type: "string"
+        vendorId:
+          type: "number"
+        hash:
+          type: "string"
+        runningBalance:
+          format: "double"
+          type: "number"
+        transactionIdx:
+          type: "integer"
+        currencyCode:
+          type: "string"
+        proprietaryBankTransactionCode:
+          type: "string"
+        proprietaryBankTransactionCodeIssuer:
+          type: "string"
+    CategorisedTransactionsResponseV1_5:
+      type: "object"
+      properties:
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorisedTransactionsV1_5"
+    CategoryOverviewCategoryHeader:
+      type: "object"
+      properties:
+        categories:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategoryHeader"
+    CategoryHeader:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        total:
+          format: "double"
+          type: "number"
+    CategorySummary:
+      type: "object"
+      properties:
+        vendorDescription:
+          type: "string"
+        categoryDescription:
+          type: "string"
+        subCategoryDescription:
+          type: "string"
+        containsLinkedReturn:
+          type: "boolean"
+        debitSummary:
+          $ref: "#/components/schemas/MonetarySummary"
+        creditSummary:
+          $ref: "#/components/schemas/MonetarySummary"
+        recurrenceType:
+          type: "string"
+        lastTransactionText:
+          type: "string"
+    CollectionsResponse:
+      type: "object"
+      properties:
+        categorisedTransactions:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              customerReference:
+                type: "string"
+              itemAccountId:
+                type: "integer"
+              applicant:
+                type: "integer"
+              accountType:
+                type: "string"
+              accountSubType:
+                type: "string"
+              transactionId:
+                type: "integer"
+              createdDate:
+                format: "date-time"
+                type: "string"
+              transactionType:
+                type: "string"
+              amount:
+                type: "number"
+              postDate:
+                format: "date-time"
+                type: "string"
+              description:
+                type: "string"
+              primaryCategoryDescription:
+                type: "string"
+              subCategoryDescription:
+                type: "string"
+              vendorDescription:
+                type: "string"
+              recurrenceEventId:
+                type: "integer"
+              recurrenceType:
+                type: "string"
+              runningBalance:
+                type: "number"
+              isAmberSalary:
+                type: "boolean"
+              isRedSalary:
+                type: "boolean"
+              layer1:
+                type: "string"
+              layer2:
+                type: "string"
+              layer3:
+                type: "string"
+        customer:
+          type: "object"
+          properties:
+            customerReference:
+              type: "string"
+            applicant:
+              type: "integer"
+            brand:
+              type: "string"
+            firstname:
+              type: "string"
+            lastname:
+              type: "string"
+            dateOfBirth:
+              format: "date-time"
+              type: "string"
+            email:
+              type: "string"
+            telephone:
+              type: "string"
+            isManual:
+              type: "boolean"
+            customerProgressStateId:
+              type: "integer"
+        runningBalance:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              customerReference:
+                type: "string"
+              itemAccountId:
+                type: "integer"
+              balanceDate:
+                format: "date-time"
+                type: "string"
+              currentBalance:
+                type: "number"
+              availableBalance:
+                type: "number"
+              startOfDayBalance:
+                type: "number"
+        collectionsDetails:
+          type: "object"
+          properties:
+            customerReference:
+              type: "string"
+            applicant:
+              type: "integer"
+            createdDate:
+              format: "date-time"
+              type: "string"
+            dependantsAdult:
+              type: "integer"
+            dependantsSixteenToEighteen:
+              type: "integer"
+            dependantsUnderSixteen:
+              type: "integer"
+            numberOfVehicles:
+              type: "integer"
+            hasMortgage:
+              type: "boolean"
+            hasRent:
+              type: "boolean"
+            hasServiceCharge:
+              type: "boolean"
+            hasSharedOwnership:
+              type: "boolean"
+            hasGas:
+              type: "boolean"
+            hasElectricity:
+              type: "boolean"
+            hasWater:
+              type: "boolean"
+            hasCouncilTax:
+              type: "boolean"
+            hasChildMaintenance:
+              type: "boolean"
+            hasHirePurchase:
+              type: "boolean"
+            hasHmrc:
+              type: "boolean"
+            hasPaymentPlan:
+              type: "boolean"
+            jointDebt:
+              type: "boolean"
+        collectionsQuestion:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              customerReference:
+                type: "string"
+              applicant:
+                type: "integer"
+              collectionQuestionId:
+                type: "integer"
+              question:
+                type: "string"
+              answer:
+                type: "string"
+              createdDate:
+                format: "date-time"
+                type: "string"
+        event:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              customerReference:
+                type: "string"
+              itemAccountId:
+                type: "integer"
+              transactionId:
+                type: "integer"
+              recurrenceEventId:
+                type: "integer"
+              eventType:
+                type: "string"
+              eventDate:
+                format: "date-time"
+                type: "string"
+              amount:
+                type: "number"
+              additionalInformation:
+                type: "string"
+              itemAccountEventTypeId:
+                type: "integer"
+        ebav:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              verifyIdentityRequestId:
+                type: "integer"
+              customerReference:
+                type: "string"
+              itemAccountId:
+                type: "integer"
+              applicant:
+                type: "integer"
+              bankName:
+                type: "string"
+              accountName:
+                type: "string"
+              currentBalance:
+                type: "number"
+              availableBalance:
+                type: "number"
+              accountNumber:
+                type: "string"
+              sortCode:
+                type: "string"
+              dateOfBirth:
+                format: "date-time"
+                type: "string"
+              addressLine1:
+                type: "string"
+              addressLine2:
+                type: "string"
+              postTown:
+                type: "string"
+              postCode:
+                type: "string"
+              accountAgeMonth:
+                type: "integer"
+              qsC070:
+                type: "string"
+              qsC074:
+                type: "string"
+              qsE070:
+                type: "string"
+              qsE074:
+                type: "string"
+              fbC1:
+                type: "string"
+              fbC2:
+                type: "string"
+              soleJointIndicator:
+                type: "string"
+              ebavResult:
+                type: "string"
+              maxRequestDate:
+                format: "date-time"
+                type: "string"
+        bureauCharacteristics:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              verifyIdentityRequestId:
+                type: "integer"
+              characteristicCode:
+                type: "string"
+              responseValue:
+                type: "string"
+              customerReference:
+                type: "string"
+        customerValues:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              customerReference:
+                type: "string"
+              applicant:
+                type: "integer"
+              l1Category:
+                type: "string"
+              l2Category:
+                type: "string"
+              l3Category:
+                type: "string"
+              originalAmount:
+                type: "number"
+              customerEnteredValue:
+                type: "number"
+        borrowings:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              customerReference:
+                type: "string"
+              applicant:
+                type: "integer"
+              lender:
+                type: "string"
+              type:
+                type: "string"
+              hasArrangement:
+                type: "boolean"
+              isPriority:
+                type: "boolean"
+              monthlyAmount:
+                type: "number"
+              totalAmount:
+                type: "number"
+        dateTimeGenerated:
+          format: "date-time"
+          type: "string"
+    CompleteCustomerProgressHistoryResponse:
+      type: "object"
+      properties:
+        createdDate:
+          format: "date-time"
+          type: "string"
+        progressState:
+          $ref: "#/components/schemas/ProgressState"
+        progressDescription:
+          type: "string"
+    TrackProgressRequest:
+      type: "object"
+      properties:
+        completeImportReference:
+          type: "string"
+          pattern: "^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$"
+      required:
+      - "completeImportReference"
+    CommercialIntelligenceTransactions:
+      type: "object"
+      properties:
+        resultDateRange:
+          type: "object"
+          properties:
+            start:
+              type: "object"
+              properties:
+                day:
+                  type: "integer"
+                month:
+                  type: "integer"
+                year:
+                  type: "integer"
+            end:
+              type: "object"
+              properties:
+                day:
+                  type: "integer"
+                month:
+                  type: "integer"
+                year:
+                  type: "integer"
+        transactions:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              level1Category:
+                type: "string"
+              level2Category:
+                type: "string"
+              level3Category:
+                type: "string"
+              categoryOrdinal:
+                type: "integer"
+              transactionId:
+                type: "integer"
+              itemAccountId:
+                type: "integer"
+              description:
+                type: "string"
+              amount:
+                type: "number"
+              postDate:
+                format: "date-time"
+                type: "string"
+              createdDate:
+                format: "date-time"
+                type: "string"
+              primaryCategoryDescription:
+                type: "string"
+              subCategoryDescription:
+                type: "string"
+              vendorDescription:
+                type: "string"
+              transactionType:
+                type: "string"
+              recurrenceType:
+                type: "string"
+              recurrenceEventId:
+                type: "integer"
+              accountType:
+                type: "string"
+              accountSubType:
+                type: "string"
+              isRedSalary:
+                type: "boolean"
+              isAmberSalary:
+                type: "boolean"
+              runningBalance:
+                type: "number"
+    CompleteImportRequest:
+      allOf:
+      - $ref: "#/components/schemas/CustomerReference"
+      - type: "object"
+        properties:
+          accountId:
+            format: "int64"
+            type: "integer"
+          bankId:
+            $ref: "#/components/schemas/BankId"
+          requestStartRange:
+            type: "string"
+            format: "date-time"
+            pattern: "^2[0-9]{3}-(1[0-2]|0[1-9])-(0[1-9]|[1-2][0-9]|3[0-1])T([0-1][0-9]|(2[0-3]))(:[0-5][0-9]){1,2}$"
+            description: "Date Time in the format that matches the pattern"
+            example: "2020-03-01T00:00"
+          requestEndRange:
+            type: "string"
+            pattern: "^2[0-9]{3}-(1[0-2]|0[1-9])-(0[1-9]|[1-2][0-9]|3[0-1])T([0-1][0-9]|(2[0-3]))(:[0-5][0-9]){1,2}$"
+            description: "Date Time in the format that matches the pattern"
+            example: "2020-03-31T23:59:59"
+        required:
+        - "accountId"
+        - "bankId"
+        - "customerRef"
+        - "requestStartRange"
+        - "requestEndRange"
+    ConsentsStatuses:
+      type: "object"
+      properties:
+        consentsStatus:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              claimed:
+                type: "boolean"
+              registered:
+                type: "boolean"
+              reauthorisedDates:
+                type: "array"
+                items:
+                  format: "date-time"
+                  type: "string"
+              revokedDate:
+                format: "date-time"
+                type: "string"
+              reference:
+                type: "string"
+              accountIds:
+                type: "array"
+                items:
+                  format: "uuid"
+                  type: "string"
+                  example: "00000000-0000-0000-0000-000000000000"
+              startDate:
+                format: "date-time"
+                type: "string"
+              endDate:
+                format: "date-time"
+                type: "string"
+              hasConsents:
+                type: "boolean"
+              bankName:
+                type: "string"
+    CreateAndEnrichRequest:
+      type: "object"
+      properties:
+        customer:
+          type: "object"
+          properties:
+            customerRef:
+              type: "string"
+              minLength: 4
+              pattern: "^[A-Z0-9a-z]{4}[A-Z0-9a-z\\- ]{0,36}$"
+            firstName:
+              type: "string"
+              pattern: "^[^&%]{1}[^&%]{0,49}$"
+            lastName:
+              type: "string"
+              minLength: 2
+              pattern: "^[^&%]{2}[^&%]{0,98}$"
+            companyName:
+              type: "string"
+              pattern: "^.{1,50}$"
+            companyNumber:
+              type: "string"
+              pattern: "^[a-zA-Z0-9]{8}$"
+            emailAddress:
+              type: "string"
+              pattern: "^[a-zA-Z0-9\\._!#$^*+={}|?/~'-]{1,125}@[a-zA-Z0-9]{1,50}(-)?[a-zA-Z0-9]{1,50}(.)?[a-zA-Z0-9]{1,6}?.[a-zA-Z]{1,6}$"
+            telephone:
+              type: "string"
+              pattern: "^[0+][0-9]{10,19}$"
+              maxLength: 20
+            doorNumberOrBuildingName:
+              type: "string"
+            streetName:
+              type: "string"
+              pattern: "^.{1,500}$"
+            cityorTownName:
+              type: "string"
+              pattern: "^[A-Za-z]{2}[A-Za-z ]{0,48}$\""
+            postCode:
+              type: "string"
+              pattern: "^[^\\\\s][ \\\\S]{4,8}$"
+            addressLookupId:
+              type: "number"
+            dateOfBirth:
+              format: "date"
+              type: "string"
+              pattern: "^(19|2[0-9])[0-9]{2}-(1[0-2]|0[1-9])-(0[1-9]|[1-2][0-9]|3[0-1])$"
+            netMonthlyIncome:
+              type: "number"
+              format: "double"
+              pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}$"
+            grossAnnualSalary:
+              type: "number"
+              format: "double"
+              pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}$"
+            employmentStatus:
+              type: "string"
+            extra:
+              type: "string"
+          required:
+          - "customerRef"
+          - "firstName"
+          - "lastName"
+          - "companyName"
+          - "companyNumber"
+          - "emailAddress"
+          - "telephone"
+          - "streetName"
+          - "cityorTownName"
+          - "postCode"
+          - "dateOfBirth"
+        accounts:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              bankId:
+                type: "integer"
+              accountId:
+                format: "int64"
+                type: "integer"
+              accountName:
+                type: "string"
+                maxLength: 255
+              accountHolder:
+                type: "string"
+              currency:
+                type: "string"
+              accountType:
+                type: "string"
+              accountSubType:
+                type: "string"
+              sortCode:
+                type: "string"
+                pattern: "^[0-9]{6}$"
+              accountNumber:
+                type: "string"
+                maxLength: 255
+              currentBalance:
+                type: "number"
+                format: "double"
+                pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}$"
+              availableBalance:
+                type: "number"
+                format: "double"
+                pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}"
+              transactions:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    transactionId:
+                      type: "integer"
+                    amount:
+                      type: "number"
+                      format: "double"
+                      pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}$"
+                    description:
+                      type: "string"
+                    postDate:
+                      type: "string"
+                      pattern: "^2[0-9]{3}-(1[0-2]|0[1-9])-(0[1-9]|[1,2][0-9]|3[0,1])T([0-1][0-9]|(2[0-3]))(:[0-5][0-9]){0,2}$"
+                      example: "2020-03-31T09:37:23"
+                    propCode:
+                      type: "string"
+                  required:
+                  - "transactionId"
+                  - "amount"
+                  - "description"
+                  - "postDate"
+            required:
+            - "bankId"
+            - "accountId"
+            - "accountName"
+            - "sortCode"
+            - "transactions"
+      required:
+      - "customer"
+      - "accounts"
+    CreateCompanyRequest:
+      allOf:
+      - $ref: "#/components/schemas/CreateCustomerRequest"
+      - type: "object"
+        properties:
+          companyName:
+            type: "string"
+            maxLength: 50
+          companyNumber:
+            type: "string"
+            pattern: "^[a-zA-Z0-9]{8}$"
+    CreateCustomerRequest:
+      allOf:
+      - $ref: "#/components/schemas/CustomerReference"
+      - type: "object"
+        properties:
+          firstName:
+            type: "string"
+            pattern: "^[^&%]{1}[^&%]{0,49}$"
+          lastName:
+            type: "string"
+            pattern: "^[^&%]{2}[^&%]{0,98}$"
+          emailAddress:
+            type: "string"
+            pattern: "^[a-zA-Z0-9\\._!#$^*+={}|?/~'-]{1,125}@[a-zA-Z0-9]{1,50}(-)?[a-zA-Z0-9]{1,50}(.)?[a-zA-Z0-9]{1,6}?.[a-zA-Z]{1,6}$"
+          postCode:
+            type: "string"
+            pattern: "^[^\\\\s][ \\\\S]{4,8}$"
+          telephone:
+            type: "string"
+            pattern: "^[0+][0-9]{10,19}$"
+            maxLength: 20
+          addressLine1:
+            type: "string"
+            maxLength: 500
+          addressLine2:
+            type: "string"
+            maxLength: 500
+          postTown:
+            type: "string"
+            pattern: "^[A-Za-z]{2}[A-Za-z ]{0,48}$"
+          dateOfBirth:
+            format: "date"
+            type: "string"
+            pattern: "^(19|2[0-9])[0-9]{2}-(1[0-2]|0[1-9])-(0[1-9]|[1-2][0-9]|3[0-1])$"
+        required:
+        - "customerRef"
+    CreateItemAccountRequest:
+      allOf:
+      - $ref: "#/components/schemas/CustomerReference"
+      - type: "object"
+        properties:
+          bankId:
+            $ref: "#/components/schemas/BankId"
+          accountId:
+            format: "int64"
+            type: "integer"
+          accountName:
+            type: "string"
+            maxLength: 255
+          sortCode:
+            type: "string"
+            pattern: "^[0-9]{6}$"
+          accountNumber:
+            type: "string"
+          currentBalance:
+            type: "number"
+            format: "double"
+            pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}$"
+          availableBalance:
+            type: "number"
+            format: "double"
+            pattern: "^[-]?[0-9]{1,19}([.][0-9]{1,2}){0,1}"
+        required:
+        - "accountId"
+        - "bankId"
+        - "customerRef"
+    CreateSiteRequest:
+      allOf:
+      - $ref: "#/components/schemas/CustomerReference"
+      - type: "object"
+        properties:
+          bankId:
+            $ref: "#/components/schemas/BankId"
+        required:
+        - "bankId"
+        - "customerRef"
+    CreditDebit:
+      type: "object"
+      properties:
+        direction:
+          type: "string"
+        recurring:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SharedClassForCreditDebit"
+        repeating:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SharedClassForCreditDebit"
+        significant:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SharedClassForCreditDebit"
+        other:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SharedClassForCreditDebit"
+    CreditDebitRatio:
+      type: "object"
+      properties:
+        overallCreditDebitRatio:
+          $ref: "#/components/schemas/CreditDebitRatioSahred"
+        historicCreditDebitRatio:
+          $ref: "#/components/schemas/CreditDebitRatioSahred"
+        forecastedCreditDebitRatio:
+          $ref: "#/components/schemas/CreditDebitRatioSahred"
+    CreditDebitRatioSahred:
+      type: "object"
+      properties:
+        overall:
+          format: "double"
+          type: "number"
+        recurring:
+          format: "double"
+          type: "number"
+        repeating:
+          format: "double"
+          type: "number"
+        significant:
+          format: "double"
+          type: "number"
+        other:
+          format: "double"
+          type: "number"
+    CustomerAccountsV1_5:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          currencyCode:
+            type: "string"
+          accountType:
+            type: "string"
+          creditLine:
+            type: "number"
+          bankName:
+            type: "string"
+          accountId:
+            format: "uuid"
+            type: "string"
+            example: "00000000-0000-0000-0000-000000000000"
+          accountHolder:
+            type: "string"
+          accountName:
+            type: "string"
+          description:
+            type: "string"
+          type:
+            type: "string"
+          subType:
+            type: "string"
+          availableBalance:
+            format: "double"
+            type: "number"
+          currentBalance:
+            format: "double"
+            type: "number"
+          numberOfTransactions:
+            format: "int32"
+            type: "integer"
+          connectionState:
+            type: "string"
+          accountNumber:
+            type: "string"
+          sortCode:
+            type: "string"
+          lastRefreshed:
+            type: "string"
+          nextScheduledRefresh:
+            type: "string"
+          firstSeen:
+            format: "date-time"
+            type: "string"
+    CustomerBenefitVerificationDto:
+      type: "object"
+      properties:
+        benefitsType:
+          type: "string"
+        amount:
+          format: "double"
+          type: "number"
+        frequency:
+          type: "string"
+        nextDate:
+          format: "date-time"
+          type: "string"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorisedTransactions"
+    CustomerDetails:
+      type: "object"
+      properties:
+        acceptTermsAndConditions:
+          type: "boolean"
+        acceptPrivacyPolicy:
+          type: "boolean"
+    CustomerIncomeVerificationDto:
+      type: "object"
+      properties:
+        employerName:
+          type: "string"
+        salaryAmount:
+          format: "double"
+          type: "number"
+        payFrequency:
+          type: "string"
+        nextExpectedPayDate:
+          format: "date-time"
+          type: "string"
+        possibleLossOfIncome:
+          type: "boolean"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorisedTransactions"
+    CustomerPensionVerificationDto:
+      type: "object"
+      properties:
+        pensionType:
+          type: "string"
+        amount:
+          format: "double"
+          type: "number"
+        frequency:
+          type: "string"
+        nextDate:
+          format: "date-time"
+          type: "string"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorisedTransactions"
+    CustomerReference:
+      properties:
+        customerRef:
+          type: "string"
+          minLength: 4
+          pattern: "^[A-Z0-9a-z]{4}[A-Z0-9a-z\\- ]{0,32}$"
+    CustomerRentAndMortgageTenantVerificationDto:
+      type: "object"
+      properties:
+        rentMortType:
+          type: "string"
+        vendor:
+          type: "string"
+        amount:
+          format: "double"
+          type: "number"
+        frequency:
+          type: "string"
+        nextDate:
+          format: "date-time"
+          type: "string"
+        possibleMissedPayment:
+          type: "boolean"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorisedTransactions"
+    CustomerSalaryTrafficLightInfoDto:
+      type: "object"
+      properties:
+        salaryAmount:
+          format: "double"
+          type: "number"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CategorisedTransactions"
+    DebitCard:
+      type: "object"
+      properties:
+        cardEnding:
+          type: "string"
+        firstSeen:
+          format: "date-time"
+          type: "string"
+        lastSeen:
+          format: "date-time"
+          type: "string"
+        timesSeen:
+          format: "int32"
+          type: "integer"
+    DirectionCategoryOverviewCategoryHeader:
+      type: "object"
+      properties:
+        average:
+          format: "double"
+          type: "number"
+        months:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AggregatedByMonthCategoryOverviewCategoryHeader"
+    DirectionCategoryCategoryBreakdownOverviewCategoryHeader:
+      type: "object"
+      properties:
+        average:
+          format: "double"
+          type: "number"
+        months:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AggregatedByMonthCategoryBreakdownOverviewCategoryHeader"
+    DisableRefresh:
+      type: "object"
+      properties:
+        success:
+          type: "boolean"
+    DisposableIncome:
+      type: "object"
+      properties:
+        calculatedIncomeTotal:
+          format: "double"
+          type: "number"
+        rawIncomeTotal:
+          format: "double"
+          type: "number"
+        calculatedExpenditureTotal:
+          format: "double"
+          type: "number"
+        rawExpenditureTotal:
+          format: "double"
+          type: "number"
+        discretionaryTotal:
+          format: "double"
+          type: "number"
+        incomeCategories:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PageTransaction"
+        expenditureCategories:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PageTransaction"
+        diPercentage:
+          format: "double"
+          type: "number"
+        incomePercentage:
+          format: "double"
+          type: "number"
+        expenditurePercentage:
+          format: "double"
+          type: "number"
+    EbavResponse:
+      type: "object"
+      properties:
+        accountNumberResponse:
+          type: "string"
+        sortCodeResponse:
+          type: "string"
+    EbavResponseWithFlag:
+      type: "object"
+      properties:
+        isVerified:
+          type: "boolean"
+        accountNumberResponse:
+          type: "string"
+        sortCodeResponse:
+          type: "string"
+    EnhancedEvent:
+      type: "object"
+      properties:
+        recurrenceType:
+          type: "string"
+        recurrenceEventId:
+          type: "number"
+        transactionId:
+          type: "number"
+        eventDate:
+          format: "date-time"
+          type: "string"
+        eventType:
+          type: "string"
+        amount:
+          format: "double"
+          type: "number"
+        additionalInformation:
+          type: "string"
+    EnhancedEventOverview:
+      type: "object"
+      properties:
+        events:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/EnhancedEvent"
+    FhiLookupResponse:
+      type: "object"
+      properties:
+        flag:
+          type: "string"
+        description:
+          type: "string"
+        level:
+          type: "string"
+    TransactionVulnerabilityResponse:
+      type: "object"
+      properties:
+        flag:
+          type: "string"
+        description:
+          type: "string"
+        level:
+          type: "string"
+    ForecastAndActualTotal:
+      type: "object"
+      properties:
+        totalCredits:
+          $ref: "#/components/schemas/TotalCreditAndDebitShared"
+        totalDebits:
+          $ref: "#/components/schemas/TotalCreditAndDebitShared"
+        netTotals:
+          $ref: "#/components/schemas/NetTotalActualAndForecast"
+    HeaderItemForecast:
+      type: "object"
+      properties:
+        date:
+          $ref: "#/components/schemas/MonthYearInt"
+        value:
+          $ref: "#/components/schemas/HeaderItemForecastValue"
+    HeaderItemForecastValue:
+      type: "object"
+      properties:
+        liner:
+          format: "double"
+          type: "number"
+        average:
+          format: "double"
+          type: "number"
+        same:
+          format: "double"
+          type: "number"
+        zero:
+          format: "double"
+          type: "number"
+    HeaderItemValue:
+      type: "object"
+      properties:
+        actuals:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ActualsShared"
+        forecast:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/HeaderItemForecast"
+    HealthCheck:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+    MonetarySummary:
+      type: "object"
+      properties:
+        total:
+          format: "double"
+          type: "number"
+        monthlyAverage:
+          format: "double"
+          type: "number"
+        transactionCount:
+          format: "int32"
+          type: "integer"
+        lastTransaction:
+          format: "date-time"
+          type: "string"
+        nextTransaction:
+          format: "date-time"
+          type: "string"
+    Month:
+      type: "object"
+      properties:
+        yearNumber:
+          format: "int32"
+          type: "integer"
+        monthNumber:
+          format: "int32"
+          type: "integer"
+    MonthYearInt:
+      type: "object"
+      properties:
+        month:
+          format: "int32"
+          type: "integer"
+        year:
+          format: "int32"
+          type: "integer"
+    NetTotalActualAndForecast:
+      type: "object"
+      properties:
+        actuals:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/NetTotalActualAndForecastSahred"
+    NetTotalActualAndForecastSahred:
+      type: "object"
+      properties:
+        date:
+          $ref: "#/components/schemas/MonthYearInt"
+        value:
+          format: "double"
+          type: "number"
+        direction:
+          type: "string"
+    PageTransaction:
+      type: "object"
+      properties:
+        description:
+          type: "string"
+        amount:
+          format: "double"
+          type: "number"
+        calculatedAmount:
+          format: "double"
+          type: "number"
+        weighting:
+          format: "double"
+          type: "number"
+    PolicyRules:
+      type: "object"
+      properties:
+        overallResult:
+          type: "string"
+        results:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              description:
+                type: "string"
+              result:
+                type: "string"
+              value:
+                type: "number"
+    ProgressState:
+      type: "integer"
+      format: "int32"
+    Refresh:
+      type: "object"
+      properties:
+        success:
+          type: "boolean"
+    RemappedCategoryBreakdownDto:
+      type: "object"
+      properties:
+        categoryName:
+          type: "string"
+        categoryOrdinal:
+          format: "int32"
+          type: "integer"
+        average:
+          format: "double"
+          type: "number"
+        total:
+          format: "double"
+          type: "number"
+        creditTotal:
+          format: "double"
+          type: "number"
+        debitTotal:
+          format: "double"
+          type: "number"
+        transactionCount:
+          format: "int32"
+          type: "integer"
+        debitCount:
+          format: "int32"
+          type: "integer"
+        creditCount:
+          format: "int32"
+          type: "integer"
+        transactions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RemappedTransactionDto"
+        subCategories:
+          type: "object"
+          additionalProperties:
+            $ref: "#/components/schemas/RemappedCategoryBreakdownDto"
+    RemappedTransactionDto:
+      type: "object"
+      properties:
+        level1Category:
+          type: "string"
+        level2Category:
+          type: "string"
+        level3Category:
+          type: "string"
+        categoryOrdinal:
+          format: "int32"
+          type: "integer"
+        transactionId:
+          format: "int64"
+          type: "integer"
+        itemAccountId:
+          format: "int32"
+          type: "integer"
+        description:
+          type: "string"
+        amount:
+          format: "double"
+          type: "number"
+        postDate:
+          format: "date-time"
+          type: "string"
+        createdDate:
+          format: "date-time"
+          type: "string"
+        primaryCategoryDescription:
+          type: "string"
+        subCategoryDescription:
+          type: "string"
+        vendorDescription:
+          type: "string"
+        transactionType:
+          type: "string"
+        recurrenceType:
+          type: "string"
+        recurrenceEventId:
+          format: "int32"
+          type: "integer"
+        accountType:
+          type: "string"
+        accountSubType:
+          type: "string"
+        isRedSalary:
+          type: "boolean"
+        isAmberSalary:
+          type: "boolean"
+        runningBalance:
+          format: "double"
+          type: "number"
+    SharedClassForCreditDebit:
+      type: "object"
+      properties:
+        headerItem:
+          type: "string"
+        values:
+          $ref: "#/components/schemas/HeaderItemValue"
+    StandardFinancialStatementResponse:
+      type: "object"
+      properties:
+        categoryName:
+          type: "string"
+        noOfSubCategories:
+          format: "int32"
+          type: "integer"
+        subCategories:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SubCategory"
+        totals:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Values"
+    SubCategory:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        values:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Values"
+    SubCategoryBreakdownL30L90:
+      type: "object"
+      properties:
+        subCategory:
+          type: "string"
+        primaryCategory:
+          type: "string"
+        countL30:
+          format: "int32"
+          type: "integer"
+        valueL30:
+          format: "double"
+          type: "number"
+        countL90:
+          format: "int32"
+          type: "integer"
+        valueL90:
+          format: "double"
+          type: "number"
+    SubCategoryBreakdownL30L90Response:
+      type: "object"
+      properties:
+        credits:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SubCategoryBreakdownL30L90"
+        debits:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SubCategoryBreakdownL30L90"
+    TotalCreditAndDebitShared:
+      type: "object"
+      properties:
+        actuals:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ActualsShared"
+        forecast:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ActualsShared"
+    ReverseLookupRequest:
+      type: "object"
+      properties:
+        accountNumber:
+          type: "string"
+          pattern: "^[0-9]{6,8}$"
+        sortCode:
+          type: "string"
+          pattern: "^[0-9]{6}$"
+      required:
+      - "accountNumber"
+      - "sortCode"
+    ReverseLookup:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          title:
+            type: "string"
+          firstName:
+            type: "string"
+          surname:
+            type: "string"
+          dateOfBirth:
+            format: "date"
+            type: "string"
+          houseName:
+            type: "string"
+          houseNumber:
+            type: "string"
+          subBuilding:
+            type: "string"
+          street1:
+            type: "string"
+          street2:
+            type: "string"
+          postTown:
+            type: "string"
+          postCode:
+            type: "string"
+          poBox:
+            type: "string"
+          district:
+            type: "string"
+          county:
+            type: "string"
+          country:
+            type: "string"
+          addressLookupId:
+            type: "string"
+        example:
+          title: "Mr"
+          firstName: "Joe"
+          surname: "Bloggs"
+          dateOfBirth: "2000-06-20"
+          houseName: "Angels Court"
+          houseNumber: "Flat 1a"
+          subBuilding: null
+          street1: "Chelmsford Road"
+          street2: "Edgeley"
+          postTown: "Stockport"
+          postCode: "SK39LQ"
+          poBox: null
+          district: null
+          county: "Greater Manchester"
+          country: null
+          addressLookupId: "28030103789"
+    Values:
+      type: "object"
+      properties:
+        amount:
+          format: "double"
+          type: "number"
+        monthYear:
+          type: "string"
+    VndError:
+      description: "Error response consisting of an error reference and a brief description\
+        \ of the error."
+      type: "object"
+      properties:
+        logref:
+          type: "string"
+          description: "A unique reference for the error instance, for audit purposes."
+        message:
+          type: "string"
+      title: "VndError"
+    ReverseLookupError:
+      title: "ReverseLookupError"
+      description: "Error response from the Apply+ API consisting of an internal error reference, brief description of the error and an error code"
+      type: "object"
+      required: [ "logref", "message"]
+      properties:
+        logref:
+          type: "string"
+          description: "A unique internal Equifax reference for the error, used for audit purpose."
+        message:
+          type: "string"
+          description: "General description of the issue"
+        errorCode:
+          type: "integer"
+          description: "Specific code related to the error if available. If there is no specific  code related to the error then this property will not be returned. Possible error codes are below:<br><br> 1501: Joint accounts not supported."
+      example:
+        logref: "e3faab59962a3d7607f46ce6e199ae1c"
+        message: "Joint accounts not supported"
+        errorCode: 1501
+    EnhancedOBID:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          accountId:
+            type: "string"
+          createdDate:
+            format: "date"
+            type: "string"
+          accountNumber:
+            type: "string"
+          sortCode:
+            type: "string"
+          dateOfBirth:
+            format: "date"
+            type: "string"
+          firstName:
+            type: "string"
+          lastName:
+            type: "string"
+          addressLine1:
+            type: "string"
+          addressLine2:
+            type: "string"
+          postTown:
+            type: "string"
+          postCode:
+            type: "string"
+          accountHolder:
+            type: "string"
+          openBankingNameMatch:
+            type: "string"
+          soleJointFlag:
+            type: "string"
+          bankAccountVerification:
+            items:
+              $ref: "#/components/schemas/EnhancedOBIDbankAccountVerification"
+          kyc210Check:
+            type: "string"
+          alerts:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/EnhancedOBIDAlerts"
+          allBureauChars:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/EnhancedOBIDAllBureauChars"
+        example:
+          accountId: "00000000-0000-0000-0000-000000000000"
+          createdDate: "2020-03-31T09:37:23.8440492+00:00"
+          accountNumber: "00000000"
+          sortCode: "000000"
+          dateOfBirth: "2020-03-31T09:37:23"
+          firstName: "firstName"
+          lastName: "lastName"
+          addressLine1: "Angels Court"
+          addressLine2: "Flat 1a"
+          postTown: "Stockport"
+          postCode: "SK39LQ"
+          accountHolder: "account holder name"
+          openBankingNameMatch: "No Match"
+          soleJointFlag: "sole"
+          bankAccountVerification: "{}"
+          kyc210Check: "Fail"
+          alerts: "[]"
+          allBureauChars: "[]"
+    EnhancedOBIDbankAccountVerification:
+      type: "object"
+      properties:
+        currentAddressPass:
+          format: "boolean"
+          type: "string"
+        previousLinkedAddressPass:
+          format: "boolean"
+          type: "string"
+        nextLinkedAddressPass:
+          format: "boolean"
+          type: "string"
+        accountAgeMonths:
+          format: "integer"
+          type: "number"
+    EnhancedOBIDAlerts:
+      type: "object"
+      properties:
+        Identifier:
+          type: "string"
+        Value:
+          type: "string"
+        Description:
+          type: "string"
+    EnhancedOBIDAllBureauChars:
+      type: "object"
+      properties:
+        Identifier:
+          type: "string"
+        Value:
+          type: "string"
+        Description:
+          type: "string"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
